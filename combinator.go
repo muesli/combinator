@@ -37,19 +37,20 @@ func Generate(v interface{}, ov interface{}) error {
 
 		offset := 1
 		for j := 0; j < members; j++ {
-			if ovValue.Field(j).Len() == 0 {
+			ovf := ovValue.Field(j)
+			if ovf.Len() == 0 {
 				// ignore empty option values
 				continue
 			}
 
 			fname := ovType.Field(j).Name
-			fvalue := ovValue.Field(j).Index((i / offset) % ovValue.Field(j).Len())
+			fvalue := ovf.Index((i / offset) % ovf.Len())
 			if vi.FieldByName(fname).CanSet() {
 				vi.FieldByName(fname).Set(fvalue)
 			}
 
 			// fmt.Println(fname, fvalue, offset)
-			offset *= ovValue.Field(j).Len()
+			offset *= ovf.Len()
 		}
 
 		// append item to original slice
