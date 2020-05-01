@@ -4,6 +4,8 @@ import (
 	"reflect"
 )
 
+// Generate returns a slice of all possible value combinations for any given
+// struct and a set of its potential member values.
 func Generate(v interface{}, ov interface{}) []interface{} {
 	ovType := reflect.TypeOf(ov)
 	ovValue := reflect.ValueOf(ov)
