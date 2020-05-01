@@ -9,18 +9,27 @@ func TestCombinator(t *testing.T) {
 		Color   string
 		Number  int
 		Enabled bool
+
+		// DataTests ignore this field
+		Untouched bool
 	}
 
 	type DataTests struct {
 		Color   []string
 		Number  []int
 		Enabled []bool
+
+		// Data does not actually contain this field
+		Unmatched []bool
 	}
 
 	td := DataTests{
 		Color:   []string{"red", "green", "blue"},
 		Number:  []int{0, 1},
 		Enabled: []bool{false, true},
+
+		// Data does not actually contain this field
+		Unmatched: []bool{false},
 	}
 	tdl := len(td.Color) * len(td.Number) * len(td.Enabled)
 
