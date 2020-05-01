@@ -1,12 +1,17 @@
 package combinator
 
 import (
+	"fmt"
 	"reflect"
 )
 
 // Generate returns a slice of all possible value combinations for any given
 // struct and a set of its potential member values.
-func Generate(v interface{}, ov interface{}) []interface{} {
+func Generate(v interface{}, ov interface{}) error {
+	vType := reflect.TypeOf(v).Elem().Elem()
+	vPtr := reflect.ValueOf(v)
+	value := vPtr.Elem()
+
 	ovType := reflect.TypeOf(ov)
 	ovValue := reflect.ValueOf(ov)
 
@@ -20,17 +25,15 @@ func Generate(v interface{}, ov interface{}) []interface{} {
 		}
 
 		fname := ovType.Field(i).Name
-		if _, ok := reflect.TypeOf(v).FieldByName(fname); !ok {
-			// fmt.Println("can't access field", fname)
-			continue
+		if _, ok := vType.FieldByName(fname); !ok {
+			return fmt.Errorf("can't access struct field %s", fname)
 		}
 
 		combinations *= ovValue.Field(i).Len()
 	}
 
-	var r []interface{}
 	for i := 0; i < combinations; i++ {
-		vi := reflect.Indirect(reflect.New(reflect.TypeOf(v)))
+		vi := reflect.Indirect(reflect.New(vType))
 
 		offset := 1
 		for j := 0; j < members; j++ {
@@ -49,8 +52,9 @@ func Generate(v interface{}, ov interface{}) []interface{} {
 			offset *= ovValue.Field(j).Len()
 		}
 
-		r = append(r, vi.Interface())
+		// append item to original slice
+		value.Set(reflect.Append(value, vi))
 	}
 
-	return r
+	return nil
 }

@@ -21,8 +21,6 @@ func TestCombinator(t *testing.T) {
 
 		// DataTests ignore this field
 		Untouched []bool
-		// Data does not actually contain this field
-		Unmatched []bool
 	}
 
 	td := DataTests{
@@ -32,8 +30,6 @@ func TestCombinator(t *testing.T) {
 
 		// DataTests ignore this field
 		Untouched: []bool{},
-		// Data does not actually contain this field
-		Unmatched: []bool{false},
 	}
 	tdl := len(td.Color) * len(td.Number) * len(td.Enabled)
 
@@ -51,32 +47,36 @@ func TestCombinator(t *testing.T) {
 		}
 	}
 
-	c := Generate(Data{}, td)
-	if len(c) != tdl {
-		t.Errorf("expected %d permutations, got %d", tdl, len(c))
+	var data []Data
+	err := Generate(&data, td)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
 	}
-	for _, v := range c {
-		// fmt.Println(i, v.(Data))
-		vData := v.(Data)
 
-		cmatrix, ok := matrix[vData.Color]
+	if len(data) != tdl {
+		t.Errorf("expected %d permutations, got %d", tdl, len(data))
+	}
+	for _, v := range data {
+		// fmt.Println(i, v)
+
+		cmatrix, ok := matrix[v.Color]
 		if !ok {
-			t.Errorf("unexpected value %s", vData.Color)
+			t.Errorf("unexpected value %s", v.Color)
 			continue
 		}
-		nmatrix, ok := cmatrix[vData.Number]
+		nmatrix, ok := cmatrix[v.Number]
 		if !ok {
-			t.Errorf("unexpected value %s %d", vData.Color, vData.Number)
+			t.Errorf("unexpected value %s %d", v.Color, v.Number)
 			continue
 		}
-		_, ok = nmatrix[vData.Enabled]
+		_, ok = nmatrix[v.Enabled]
 		if !ok {
-			t.Errorf("unexpected value %s %d %v", vData.Color, vData.Number, vData.Enabled)
+			t.Errorf("unexpected value %s %d %v", v.Color, v.Number, v.Enabled)
 			continue
 		}
 
 		// flag combination as found
-		matrix[vData.Color][vData.Number][vData.Enabled] = true
+		matrix[v.Color][v.Number][v.Enabled] = true
 	}
 
 	// check all combinations have been found
@@ -88,5 +88,31 @@ func TestCombinator(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestUnmatchedField(t *testing.T) {
+	type Data struct {
+		Number int
+	}
+
+	type DataTests struct {
+		Number []int
+
+		// Data does not actually contain this field
+		Unmatched []bool
+	}
+
+	td := DataTests{
+		Number: []int{0, 1},
+
+		// Data does not actually contain this field
+		Unmatched: []bool{false},
+	}
+
+	var data []Data
+	err := Generate(&data, td)
+	if err == nil {
+		t.Errorf("expected error for unmatched fields in data, got nil")
 	}
 }

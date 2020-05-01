@@ -38,9 +38,9 @@ testData := UserTests{
     Admin: []bool{false, true},
 }
 
-c := combinator.Generate(User{}, testData)
-for i, v := range c {
-    u := v.(User)
+var users []User
+combinator.Generate(&users, testData)
+for i, u := range users {
     fmt.Printf("Combination %2d | Name: %-5s | Age: %d | Admin: %v\n", i, u.Name, u.Age, u.Admin)
 }
 ```
