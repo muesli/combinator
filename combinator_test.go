@@ -19,6 +19,8 @@ func TestCombinator(t *testing.T) {
 		Number  []int
 		Enabled []bool
 
+		// DataTests ignore this field
+		Untouched []bool
 		// Data does not actually contain this field
 		Unmatched []bool
 	}
@@ -28,6 +30,8 @@ func TestCombinator(t *testing.T) {
 		Number:  []int{0, 1},
 		Enabled: []bool{false, true},
 
+		// DataTests ignore this field
+		Untouched: []bool{},
 		// Data does not actually contain this field
 		Unmatched: []bool{false},
 	}
