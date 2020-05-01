@@ -20,44 +20,44 @@ go get github.com/muesli/combinator
 
 ```go
 type User struct {
-	Name  string
-	Age   uint
-	Admin bool
+    Name  string
+    Age   uint
+    Admin bool
 }
 
 type UserTests struct {
-	Name  []string
-	Age   []uint
-	Admin []bool
+    Name  []string
+    Age   []uint
+    Admin []bool
 }
 
 // define potential values
 testData := UserTests{
-	Name:  []string{"Alice", "Bob"},
-	Age:   []uint{23, 42, 99},
-	Admin: []bool{false, true},
+    Name:  []string{"Alice", "Bob"},
+    Age:   []uint{23, 42, 99},
+    Admin: []bool{false, true},
 }
 
 c := combinator.Generate(User{}, testData)
 for i, v := range c {
-	u := v.(User)
-	fmt.Printf("Combination %2d - Name: %-6s Age: %2d, Admin: %v\n", i, u.Name, u.Age, u.Admin)
+    u := v.(User)
+    fmt.Printf("Combination %2d - Name: %-6s - Age: %d - Admin: %v\n", i, u.Name, u.Age, u.Admin)
 }
 ```
 
 ```
-Combination  0 - Name: Alice  Age: 23, Admin: false
-Combination  1 - Name: Bob    Age: 23, Admin: false
-Combination  2 - Name: Alice  Age: 42, Admin: false
-Combination  3 - Name: Bob    Age: 42, Admin: false
-Combination  4 - Name: Alice  Age: 99, Admin: false
-Combination  5 - Name: Bob    Age: 99, Admin: false
-Combination  6 - Name: Alice  Age: 23, Admin: true
-Combination  7 - Name: Bob    Age: 23, Admin: true
-Combination  8 - Name: Alice  Age: 42, Admin: true
-Combination  9 - Name: Bob    Age: 42, Admin: true
-Combination 10 - Name: Alice  Age: 99, Admin: true
-Combination 11 - Name: Bob    Age: 99, Admin: true
+Combination  0 - Name: Alice  - Age: 23 - Admin: false
+Combination  1 - Name: Bob    - Age: 23 - Admin: false
+Combination  2 - Name: Alice  - Age: 42 - Admin: false
+Combination  3 - Name: Bob    - Age: 42 - Admin: false
+Combination  4 - Name: Alice  - Age: 99 - Admin: false
+Combination  5 - Name: Bob    - Age: 99 - Admin: false
+Combination  6 - Name: Alice  - Age: 23 - Admin: true
+Combination  7 - Name: Bob    - Age: 23 - Admin: true
+Combination  8 - Name: Alice  - Age: 42 - Admin: true
+Combination  9 - Name: Bob    - Age: 42 - Admin: true
+Combination 10 - Name: Alice  - Age: 99 - Admin: true
+Combination 11 - Name: Bob    - Age: 99 - Admin: true
 ```
 
 ## License

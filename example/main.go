@@ -29,6 +29,6 @@ func main() {
 	c := combinator.Generate(User{}, testData)
 	for i, v := range c {
 		u := v.(User)
-		fmt.Printf("Combination %2d - Name: %-6s Age: %2d, Admin: %v\n", i, u.Name, u.Age, u.Admin)
+		fmt.Printf("Combination %2d - Name: %-6s - Age: %d - Admin: %v\n", i, u.Name, u.Age, u.Admin)
 	}
 }
