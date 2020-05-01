@@ -43,6 +43,7 @@ testData := UserTests{
 // generate all possible combinations
 var users []User
 combinator.Generate(&users, testData)
+
 for i, u := range users {
     fmt.Printf("Combination %2d | Name: %-5s | Age: %d | Admin: %v\n", i, u.Name, u.Age, u.Admin)
 }
