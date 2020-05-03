@@ -13,22 +13,21 @@ func main() {
 		Admin bool
 	}
 
-	// make sure the struct's fields share the name and type
-	// of the structs you want to generate
-	type UserTests struct {
+	/*
+		Define potential test values. Make sure the struct's fields share the name and
+		type of the structs you want to generate.
+	*/
+	testData := struct {
 		Name  []string
 		Age   []uint
 		Admin []bool
-	}
-
-	// define potential values
-	testData := UserTests{
+	}{
 		Name:  []string{"Alice", "Bob"},
 		Age:   []uint{23, 42, 99},
 		Admin: []bool{false, true},
 	}
 
-	// generate all possible combinations
+	// Generate all possible combinations
 	var users []User
 	combinator.Generate(&users, testData)
 
