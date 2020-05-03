@@ -116,3 +116,25 @@ func TestUnmatchedField(t *testing.T) {
 		t.Errorf("expected error for unmatched fields in data, got nil")
 	}
 }
+
+func TestInvalidType(t *testing.T) {
+	td := struct {
+		Number []int
+	}{}
+
+	var s string
+	err := Generate(s, td)
+	if err == nil {
+		t.Errorf("expected error for non-pointer type, got nil")
+	}
+
+	err = Generate(&s, td)
+	if err == nil {
+		t.Errorf("expected error for invalid type, got nil")
+	}
+
+	err = Generate(&[]string{}, "")
+	if err == nil {
+		t.Errorf("expected error for invalid type, got nil")
+	}
+}

@@ -8,12 +8,23 @@ import (
 // Generate returns a slice of all possible value combinations for any given
 // struct and a set of its potential member values.
 func Generate(v interface{}, ov interface{}) error {
-	vType := reflect.TypeOf(v).Elem().Elem()
+	// verify supplied types
 	vPtr := reflect.ValueOf(v)
+	if vPtr.Kind() != reflect.Ptr {
+		return fmt.Errorf("non-pointer type supplied")
+	}
+
 	value := vPtr.Elem()
+	if value.Kind() != reflect.Slice {
+		return fmt.Errorf("pointer to non-slice type supplied")
+	}
+	vType := reflect.TypeOf(v).Elem().Elem()
 
 	ovType := reflect.TypeOf(ov)
 	ovValue := reflect.ValueOf(ov)
+	if ovValue.Kind() != reflect.Struct {
+		return fmt.Errorf("non-slice type supplied")
+	}
 
 	// calculate combinations
 	combinations := 1
@@ -32,6 +43,7 @@ func Generate(v interface{}, ov interface{}) error {
 		combinations *= ovValue.Field(i).Len()
 	}
 
+	// fill struct with all combinations
 	for i := 0; i < combinations; i++ {
 		vi := reflect.Indirect(reflect.New(vType))
 
