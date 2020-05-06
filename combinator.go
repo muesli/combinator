@@ -30,6 +30,9 @@ func Generate(v interface{}, ov interface{}) error {
 	combinations := 1
 	members := ovType.NumField()
 	for i := 0; i < members; i++ {
+		if ovValue.Field(i).Kind() != reflect.Slice {
+			continue
+		}
 		if ovValue.Field(i).Len() == 0 {
 			// ignore empty option values
 			continue
@@ -50,19 +53,26 @@ func Generate(v interface{}, ov interface{}) error {
 		offset := 1
 		for j := 0; j < members; j++ {
 			ovf := ovValue.Field(j)
-			if ovf.Len() == 0 {
-				// ignore empty option values
-				continue
+			var fvalue reflect.Value
+
+			if ovf.Kind() == reflect.Slice {
+				if ovf.Len() == 0 {
+					// ignore empty option values
+					continue
+				}
+
+				fvalue = ovf.Index((i / offset) % ovf.Len())
+				offset *= ovf.Len()
+			} else {
+				fvalue = ovf
 			}
 
 			fname := ovType.Field(j).Name
-			fvalue := ovf.Index((i / offset) % ovf.Len())
 			if vi.FieldByName(fname).CanSet() {
 				vi.FieldByName(fname).Set(fvalue)
 			}
 
 			// fmt.Println(fname, fvalue, offset)
-			offset *= ovf.Len()
 		}
 
 		// append item to original slice

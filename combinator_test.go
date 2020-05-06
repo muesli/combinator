@@ -91,6 +91,35 @@ func TestCombinator(t *testing.T) {
 	}
 }
 
+func TestConstValue(t *testing.T) {
+	type Data struct {
+		Number  int
+		Enabled bool
+	}
+
+	type DataTests struct {
+		Number  []int
+		Enabled bool
+	}
+
+	td := DataTests{
+		Number:  []int{0, 1},
+		Enabled: true,
+	}
+
+	var data []Data
+	err := Generate(&data, td)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	for _, v := range data {
+		if !v.Enabled {
+			t.Fatalf("expected enabled to be set to true")
+		}
+	}
+}
+
 func TestUnmatchedField(t *testing.T) {
 	type Data struct {
 		Number int
