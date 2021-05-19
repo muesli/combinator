@@ -4,7 +4,7 @@
 [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/muesli/combinator)
 [![Build Status](https://github.com/muesli/combinator/workflows/build/badge.svg)](https://github.com/muesli/combinator/actions)
 [![Coverage Status](https://coveralls.io/repos/github/muesli/combinator/badge.svg?branch=master)](https://coveralls.io/github/muesli/combinator?branch=master)
-[![Go ReportCard](http://goreportcard.com/badge/muesli/combinator)](http://goreportcard.com/report/muesli/combinator)
+[![Go ReportCard](https://goreportcard.com/badge/muesli/combinator)](https://goreportcard.com/report/muesli/combinator)
 
 `combinator` generates a slice of all possible value combinations for any given
 struct and a set of its potential member values. This can be used to generate
